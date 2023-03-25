@@ -2,51 +2,43 @@ package com.expensestracker.service;
 
 import com.expensestracker.dto.LoginRequest;
 import com.expensestracker.dto.LoginResponse;
-import com.expensestracker.entity.Customer;
 import com.expensestracker.entity.Session;
-import com.expensestracker.exception.ServiceLayerException;
-import com.expensestracker.repository.CustomerRepository;
 import com.expensestracker.repository.SessionRepository;
+import com.expensestracker.security.CustomerDetails;
 import com.expensestracker.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.expensestracker.utils.Constants.TOKEN_PREFIX;
 
 @Service
+@RequiredArgsConstructor
 public class LoginService {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
 
 
     public LoginResponse login(LoginRequest loginRequest) {
-        Optional<Customer> customer = customerRepository.finByEmail(loginRequest.getUsername());
+        CustomerDetails customerDetails = (CustomerDetails) userDetailsService.loadUserByUsername(loginRequest.getUsername());
 
-        // FIXME use username or password is invalid
-        String password = customer.orElseThrow(() -> new ServiceLayerException("Customer %s was not found".formatted(loginRequest.getUsername()), HttpStatus.UNPROCESSABLE_ENTITY)).getPassword();
-
-        if (!passwordEncoder.matches(loginRequest.getPassword(), password)) {
-            throw new ServiceLayerException("Password is invalid", HttpStatus.UNPROCESSABLE_ENTITY);
+        if (!passwordEncoder.matches(loginRequest.getPassword(), customerDetails.getPassword())) {
+            throw new BadCredentialsException("Username Or password is invalid");
         }
 
         Session session = Session.builder()
-                .customer(customer.get())
+                .customer(customerDetails.getCustomer())
                 .active(true)
                 .build();
 

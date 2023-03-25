@@ -4,10 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.expensestracker.entity.Session;
+import com.expensestracker.entity.Customer;
+import com.expensestracker.repository.CustomerRepository;
 import com.expensestracker.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,6 +24,7 @@ public class JwtTokenProvider {
     private String secret;
 
     private final SessionRepository sessionRepository;
+    private final CustomerRepository customerRepository;
 
     public String generateJwtToken(final String session) {
 
@@ -32,9 +35,11 @@ public class JwtTokenProvider {
 
     public boolean isTokenValid(String token) {
         var sessionId = getSubject(token);
-        Optional<Session> session = sessionRepository.findById(UUID.fromString(sessionId));
 
-        return session.isPresent() ? session.get().getActive() : false;
+        if (!customerRepository.existsBySessionId(UUID.fromString(sessionId))) {
+            throw new BadCredentialsException("Customer is not logged in");
+        }
+        return true;
     }
 
     public String getSubject(String token) {

@@ -1,18 +1,26 @@
 package com.expensestracker.security.jwt;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.Collection;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class JwtAuthentication implements Authentication {
-
-
-    private final String username;
-    private final String subject;
+    private String username;
+    private String subject;
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

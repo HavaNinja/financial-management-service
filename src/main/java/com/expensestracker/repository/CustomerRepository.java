@@ -15,6 +15,9 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     Optional<Customer> finByEmail(String email);
 
 
+    @Query(value = " SELECT count (s.customer)=1 FROM Session s WHERE s.id = ?1  AND s.active = true ")
+    boolean existsBySessionId(UUID sessionId);
+
     @Query(value = " SELECT s.customer FROM Session s  WHERE s.id = ?1 AND s.active = true")
-    Customer findBySessionsId(UUID sessionId);
+    Optional<Customer> findCustomerBySession(UUID sessionId);
 }

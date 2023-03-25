@@ -1,22 +1,19 @@
 package com.expensestracker.security;
 
-import com.expensestracker.exception.ServiceLayerException;
-import com.expensestracker.repository.CustomerRepository;
 import com.expensestracker.security.jwt.JwtAuthentication;
-import com.expensestracker.security.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static com.expensestracker.utils.Constants.AUTHORIZATION_HEADER;
 import static com.expensestracker.utils.Constants.TOKEN_PREFIX;
@@ -25,8 +22,7 @@ import static com.expensestracker.utils.Constants.TOKEN_PREFIX;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final CustomerRepository customerRepository;
+    private final AuthenticationManager authenticationManager;
 
 
     @Override
@@ -38,20 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String token = authorizationHeader.substring(TOKEN_PREFIX.length());
+        String token = authorizationHeader.substring(TOKEN_PREFIX.length());
 
-        if (!jwtTokenProvider.isTokenValid(token)) {
-            throw new ServiceLayerException("Invalid token", HttpStatus.FORBIDDEN);
-        }
+        JwtAuthentication authentication = JwtAuthentication.builder()
+                .token(token)
+                .build();
 
-        final String sessionId = jwtTokenProvider.getSubject(token);
-        String username = customerRepository.findBySessionsId(UUID.fromString(sessionId)).getEmail();
+        Authentication authenticate = authenticationManager.authenticate(authentication);
 
-        JwtAuthentication jwtAuthentication = new JwtAuthentication(username, sessionId);
-
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(jwtAuthentication);
-        SecurityContextHolder.setContext(context);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
 
         filterChain.doFilter(request, response);
     }
