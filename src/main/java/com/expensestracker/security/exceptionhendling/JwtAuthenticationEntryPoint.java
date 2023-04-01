@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -20,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException arg2) throws IOException {
-        final ErrorResponse httpResponse = new  ErrorResponse(FORBIDDEN.value(),FORBIDDEN, "Access denied", LocalDateTime.now());
+        final ErrorResponse httpResponse = new ErrorResponse(FORBIDDEN.value(), FORBIDDEN, "Access denied", new Date());
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(FORBIDDEN.value());
 

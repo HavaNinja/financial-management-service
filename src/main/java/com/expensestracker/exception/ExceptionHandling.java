@@ -1,5 +1,6 @@
 package com.expensestracker.exception;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.expensestracker.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,8 +9,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -35,8 +37,14 @@ public class ExceptionHandling {
         return createHttpResponse(UNAUTHORIZED, e.getMessage());
     }
 
+    @ExceptionHandler(JWTDecodeException.class)
+    public ResponseEntity<ErrorResponse> internalServerError(final JWTDecodeException e) {
+        log.error(e.getMessage());
+        return createHttpResponse(FORBIDDEN, e.getMessage());
+    }
+
     private ResponseEntity<ErrorResponse> createHttpResponse(HttpStatus httpStatus, String message) {
-        final ErrorResponse httpResponse = new ErrorResponse(httpStatus.value(), httpStatus, message, LocalDateTime.now());
+        final ErrorResponse httpResponse = new ErrorResponse(httpStatus.value(), httpStatus, message, new Date());
         return new ResponseEntity<>(httpResponse, httpStatus);
     }
 }

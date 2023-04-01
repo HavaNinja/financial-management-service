@@ -57,7 +57,6 @@ public class SecurityConfiguration {
     }
 
     @Bean
-
     public AuthenticationManager authenticationManager(JwtAuthenticationProvider jwtAuthenticationProvider) {
         return new ProviderManager(jwtAuthenticationProvider);
     }

@@ -3,11 +3,13 @@ package com.expensestracker.service;
 import com.expensestracker.dto.LoginRequest;
 import com.expensestracker.dto.LoginResponse;
 import com.expensestracker.entity.Session;
+import com.expensestracker.exception.ServiceLayerException;
 import com.expensestracker.repository.SessionRepository;
 import com.expensestracker.security.CustomerDetails;
 import com.expensestracker.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,13 +36,10 @@ public class LoginService {
         CustomerDetails customerDetails = (CustomerDetails) userDetailsService.loadUserByUsername(loginRequest.getUsername());
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), customerDetails.getPassword())) {
-            throw new BadCredentialsException("Username Or password is invalid");
+            throw new ServiceLayerException("Username Or password is invalid", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        Session session = Session.builder()
-                .customer(customerDetails.getCustomer())
-                .active(true)
-                .build();
+        Session session = Session.builder().customer(customerDetails.getCustomer()).active(true).build();
 
         UUID sessionId = sessionRepository.save(session).getId();
 
