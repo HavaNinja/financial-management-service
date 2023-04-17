@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.haveriuq</groupId>
-    <artifactId>expenses-tracker</artifactId>
+    <artifactId>financial-management-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>expenses-tracker</name>
     <description>expenses-tracker</description>
