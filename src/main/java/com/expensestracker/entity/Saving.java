@@ -1,7 +1,9 @@
 package com.expensestracker.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +21,12 @@ public class Saving extends BaseEntity {
 
     private Currency currency;
 
-    @OneToMany
+    @ManyToOne
+    private Customer customer;
+
+    private String name;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "saving_id")
     private List<SavingHistory> history;
 }

@@ -21,25 +21,25 @@ public class ExceptionHandling {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> internalServerError(final Exception e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         return createHttpResponse(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     @ExceptionHandler(ServiceLayerException.class)
     public ResponseEntity<ErrorResponse> internalServerError(final ServiceLayerException e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         return createHttpResponse(e.getHttpStatus(), e.getMessage());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> internalServerError(final BadCredentialsException e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         return createHttpResponse(UNAUTHORIZED, e.getMessage());
     }
 
     @ExceptionHandler(JWTDecodeException.class)
     public ResponseEntity<ErrorResponse> internalServerError(final JWTDecodeException e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         return createHttpResponse(FORBIDDEN, e.getMessage());
     }
 

@@ -18,7 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RegistrationController {
 
-
     private final CustomerService customerService;
 
     @PostMapping

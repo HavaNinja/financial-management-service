@@ -1,20 +1,17 @@
-package com.expensestracker.entity;
+package com.expensestracker.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.expensestracker.entity.Operation;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
-@Entity
 @Getter
 @Setter
-public class SavingHistory extends BaseEntity {
-
+@Builder
+public class SavingHistoryDto {
     private BigDecimal changeAmount;
 
     private LocalDateTime changeDate;
@@ -24,8 +21,4 @@ public class SavingHistory extends BaseEntity {
     private BigDecimal balanceBefore;
 
     private BigDecimal balanceAfter;
-
-    @ManyToOne
-    @JoinColumn(name = "saving_id")
-    private Saving saving;
 }
