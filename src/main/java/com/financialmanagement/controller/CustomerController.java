@@ -1,8 +1,8 @@
 package com.financialmanagement.controller;
 
-import com.financialmanagement.dto.SavingDto;
-import com.financialmanagement.entity.Saving;
-import com.financialmanagement.service.SavingService;
+import com.financialmanagement.domain.saving.dto.SavingDto;
+import com.financialmanagement.domain.saving.entity.Saving;
+import com.financialmanagement.domain.saving.SavingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

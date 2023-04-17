@@ -1,10 +1,10 @@
 package com.financialmanagement.controller;
 
-import com.financialmanagement.dto.ModifySavingDto;
-import com.financialmanagement.dto.OpenSavingRequest;
-import com.financialmanagement.dto.SavingHistoryDto;
-import com.financialmanagement.entity.SavingHistory;
-import com.financialmanagement.service.SavingService;
+import com.financialmanagement.domain.saving.dto.ModifySavingDto;
+import com.financialmanagement.domain.saving.dto.OpenSavingRequest;
+import com.financialmanagement.domain.saving.dto.SavingHistoryDto;
+import com.financialmanagement.domain.saving.entity.SavingHistory;
+import com.financialmanagement.domain.saving.SavingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -1,7 +1,7 @@
 package com.financialmanagement.controller;
 
-import com.financialmanagement.dto.CreateCustomerRequest;
-import com.financialmanagement.service.CustomerService;
+import com.financialmanagement.domain.customer.dto.CreateCustomerRequest;
+import com.financialmanagement.domain.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

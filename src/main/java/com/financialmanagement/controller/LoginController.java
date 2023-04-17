@@ -1,8 +1,8 @@
 package com.financialmanagement.controller;
 
-import com.financialmanagement.dto.LoginRequest;
-import com.financialmanagement.dto.LoginResponse;
-import com.financialmanagement.service.LoginService;
+import com.financialmanagement.domain.login.dto.LoginRequest;
+import com.financialmanagement.domain.login.dto.LoginResponse;
+import com.financialmanagement.domain.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
