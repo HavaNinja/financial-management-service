@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.haveriuq</groupId>
     <artifactId>financial-management-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>expenses-tracker</name>
     <description>expenses-tracker</description>
     <properties>
