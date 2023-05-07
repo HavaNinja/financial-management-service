@@ -1,7 +1,9 @@
 package com.financialmanagement.domain.customer.entity;
 
-import com.financialmanagement.domain.saving.entity.Saving;
 import com.financialmanagement.domain.common.BaseEntity;
+import com.financialmanagement.domain.expense.entity.Expense;
+import com.financialmanagement.domain.saving.entity.Saving;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -29,9 +31,13 @@ public class Customer extends BaseEntity {
     @Column(unique = true)
     private String email;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "customer_id")
     private List<Saving> savings;
+
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "customer_id")
+    private List<Expense> expenses;
 
     private String password;
 
