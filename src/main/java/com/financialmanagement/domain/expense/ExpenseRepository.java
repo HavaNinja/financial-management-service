@@ -13,4 +13,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 
     @Query("SELECT e from Expense e where e.category = COALESCE(:category,e.category) AND e.date = COALESCE(:localDate,e.date) and e.customer.email=:username")
     List<Expense> finByCategory(ExpenseCategory category, LocalDate localDate, String username);
+
+    @Query("SELECT count (e) > 0 FROM Expense e where e.customer.email=:username AND e.id=:expenseId")
+    boolean expenseBelongsToCustomer(String username, UUID expenseId);
 }

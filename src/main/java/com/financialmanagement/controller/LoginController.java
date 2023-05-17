@@ -1,8 +1,9 @@
 package com.financialmanagement.controller;
 
+import com.financialmanagement.domain.login.LoginService;
 import com.financialmanagement.domain.login.dto.LoginRequest;
 import com.financialmanagement.domain.login.dto.LoginResponse;
-import com.financialmanagement.domain.login.LoginService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController

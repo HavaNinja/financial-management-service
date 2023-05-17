@@ -1,5 +1,7 @@
 package com.financialmanagement.domain.saving;
 
+import com.financialmanagement.domain.common.PermissionValidationService;
+import com.financialmanagement.domain.customer.CustomerRepository;
 import com.financialmanagement.domain.customer.entity.Customer;
 import com.financialmanagement.domain.saving.dto.ModifySavingDto;
 import com.financialmanagement.domain.saving.dto.OpenSavingRequest;
@@ -7,8 +9,6 @@ import com.financialmanagement.domain.saving.entity.Saving;
 import com.financialmanagement.domain.saving.entity.SavingHistory;
 import com.financialmanagement.utils.Operation;
 import com.financialmanagement.utils.exception.ServiceLayerException;
-import com.financialmanagement.domain.customer.CustomerRepository;
-import com.financialmanagement.domain.common.PermissionValidationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -88,7 +87,9 @@ public class SavingService {
     }
 
     public void remove(UUID savingId) {
-        Optional<Saving> savingToRemove = savingRepository.findById(savingId);
-        savingToRemove.ifPresent(saving -> savingRepository.delete(saving));
+        Saving savingToRemove = savingRepository.findById(savingId).orElseThrow(() -> new ServiceLayerException("Saving was not found", HttpStatus.NOT_FOUND));
+
+        permissionValidationService.checkSavingBelongsToUser(SecurityContextHolder.getContext().getAuthentication().getName(), savingId);
+        savingRepository.delete(savingToRemove);
     }
 }

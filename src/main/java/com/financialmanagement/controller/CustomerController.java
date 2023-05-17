@@ -5,6 +5,7 @@ import com.financialmanagement.domain.expense.dto.AddExpenseRequest;
 import com.financialmanagement.domain.saving.SavingService;
 import com.financialmanagement.domain.saving.dto.SavingDto;
 import com.financialmanagement.domain.saving.entity.Saving;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

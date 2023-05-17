@@ -1,11 +1,11 @@
 package com.financialmanagement.domain.expense.dto;
 
 import com.financialmanagement.utils.Currency;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
