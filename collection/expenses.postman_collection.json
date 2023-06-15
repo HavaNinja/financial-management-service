@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "3d904b81-6922-4e52-97bf-d7b94610595a",
+		"name": "expenses",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10048632"
+	},
+	"item": [
+		{
+			"name": "registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Andrei\",\r\n    \"lastName\":\"Haveriuc\",\r\n    \"password\": \"123qwe\",\r\n    \"email\": \"haveriuc123.a@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/registration",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response=JSON.parse(responseBody);\r",
+							"console.log(response)\r",
+							"postman.setEnvironmentVariable(\"acceassToken\", response.jwtToken)\r",
+							"pm.globals.set(\"acceassToken\", response.jwtToken);\r",
+							"pm.globals.set(\"acceassToken\",  response.jwtToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\": \"123qwe\",\r\n    \"username\": \"haveriuc123.a@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "open saving",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\":500,\r\n    \"currency\":\"EUR\",\r\n    \"name\": \"For car\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/saving",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"saving"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get customer savings",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/customer/saving",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customer",
+						"saving"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify saving",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"savingId\":\"99a48454-0b7a-4d92-b886-ca5c21416cc7\",\r\n    \"operation\":\"DEPOSIT\",\r\n    \"amount\":\"15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/saving/modify",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"saving",
+						"modify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get saving history",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/saving/history/99a48454-0b7a-4d92-b886-ca5c21416cc7",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"saving",
+						"history",
+						"99a48454-0b7a-4d92-b886-ca5c21416cc7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete saving",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/saving/2e139176-933b-4023-a069-b3dbb0cfdf61",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"saving",
+						"2e139176-933b-4023-a069-b3dbb0cfdf61"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add customer expense",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"category\":\"SUPERMARKET\",\r\n    \"message\":\"tes32\",\r\n    \"amount\":50,\r\n    \"currency\":\"EUR\",\r\n    \"date\":\"2023-05-17\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/customer/expense",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customer",
+						"expense"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get expense",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/expense?category=SUPERMARKET",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"expense"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "SUPERMARKET"
+						},
+						{
+							"key": "date",
+							"value": "2022-04-17",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete expense",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Authorization-Header",
+						"value": "{{acceassToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/expense/8373b9bc-c41a-42a7-acde-71f9ea03847f",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"expense",
+						"8373b9bc-c41a-42a7-acde-71f9ea03847f"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "acceassToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
